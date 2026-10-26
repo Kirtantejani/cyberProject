@@ -1,0 +1,26 @@
+# Python
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+.streamlit/secrets.toml
+
+# Private keys and sensitive data
+keys/*
+!keys/.gitkeep
+data/encrypted/*
+!data/encrypted/.gitkeep
+data/metadata/*
+!data/metadata/.gitkeep
+
+# OS and editor
+.DS_Store
+.vscode/
+.idea/
