@@ -1,45 +1,27 @@
 import streamlit as st
+from app_pages.owner_dashboard import render_owner_dashboard
+from app_pages.requester_dashboard import render_requester_dashboard
 
-st.set_page_config(
-    page_title="Secure File Sharing",
-    page_icon="🔐",
-    layout="wide",
-)
-
+st.set_page_config(page_title="Secure File Storage & Sharing", page_icon="🔐", layout="wide")
 st.title("🔐 Secure File Storage & Sharing")
-st.caption("Encrypted file storage with controlled access and auditable sharing.")
+st.caption("Encrypted storage • Verified integrity • Owner-controlled access • Auditable requests")
 
-page = st.sidebar.radio(
-    "Navigation",
-    ["Home", "Owner Dashboard", "Requester Dashboard"],
-)
-
+page = st.sidebar.radio("Navigation", ["Home", "Owner Dashboard", "Requester Dashboard", "Security Status"])
 if page == "Home":
-    st.header("Welcome")
-    st.write(
-        "Store files securely, request access to shared files, "
-        "and manage permissions through an auditable workflow."
-    )
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        st.subheader("File owner")
-        st.write("Upload files and manage access requests.")
-
-    with col2:
-        st.subheader("Requester")
-        st.write("Browse available file records and request permission.")
-
-    st.info(
-        "Prototype stage: security and blockchain features "
-        "will be connected in subsequent development steps."
-    )
-
+    st.subheader("Project overview")
+    c1, c2 = st.columns(2)
+    with c1:
+        st.markdown("### File owner")
+        st.write("Encrypt files before storage, register file metadata, and decide on access requests.")
+    with c2:
+        st.markdown("### Requester")
+        st.write("Request access to a file and use a key shared securely by its owner after approval.")
+    st.info("Use demo mode for local testing. Blockchain actions require a deployed contract and configured environment.")
 elif page == "Owner Dashboard":
-    from app_pages.owner_dashboard import render_owner_dashboard
     render_owner_dashboard()
-
 elif page == "Requester Dashboard":
-    from app_pages.requester_dashboard import render_requester_dashboard
     render_requester_dashboard()
+else:
+    st.subheader("Configuration")
+    st.write("The cryptographic modules and tests are local. Configure the blockchain using `.env` and follow `README.md` before enabling on-chain actions.")
+    st.warning("This is an educational prototype, not a production-ready file sharing service.")
