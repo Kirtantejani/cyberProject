@@ -1,21 +1,30 @@
 """Compile and deploy SecureFileSharing.sol to a local EVM JSON-RPC node."""
 import json
 from pathlib import Path
-from solcx import compile_standard, install_solc
+from solcx import compile_standard
 from web3 import Web3
 from src.config.settings import ROOT, BLOCKCHAIN_RPC_URL, CHAIN_ID
 
 SOLC_VERSION = "0.8.20"
 
 def main():
-    install_solc(SOLC_VERSION)
+    
     source_path = ROOT / "contracts" / "SecureFileSharing.sol"
     source = source_path.read_text(encoding="utf-8")
     compiled = compile_standard({
-        "language": "Solidity",
-        "sources": {"SecureFileSharing.sol": {"content": source}},
-        "settings": {"outputSelection": {"*": {"*": ["abi", "evm.bytecode"]}}},
-    }, solc_version=SOLC_VERSION)
+    "language": "Solidity",
+    "sources": {
+        "SecureFileSharing.sol": {"content": source}
+    },
+    "settings": {
+        "evmVersion": "paris",
+        "outputSelection": {
+            "*": {
+                "*": ["abi", "evm.bytecode"]
+            }
+       	 }
+   	 }
+	}, solc_binary="/opt/homebrew/bin/solc")
     contract_data = compiled["contracts"]["SecureFileSharing.sol"]["SecureFileSharing"]
     artifact = {"abi": contract_data["abi"], "bytecode": contract_data["evm"]["bytecode"]["object"]}
     artifact_path = ROOT / "contracts" / "artifacts" / "SecureFileSharing.json"
